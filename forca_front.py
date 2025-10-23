@@ -5,7 +5,6 @@ import os
 class ForcaGame(ctk.CTk):
     def __init__(self):
         super().__init__()
-
         self.title("JOGO DA FORCA")
         self.geometry("800x600")
         self.resizable(False, False)
@@ -49,25 +48,19 @@ class ForcaGame(ctk.CTk):
         self.entrada_palavra.delete(0, ctk.END)
 
     def criar_widgets(self):
-        # Título
         self.title_label = ctk.CTkLabel(self, text="JOGO DA FORCA", font=("Arial", 30, "bold"), text_color="#00BFFF")
         self.title_label.pack(pady=20)
 
-        # Palavra oculta
         self.palavra_label = ctk.CTkLabel(self, text="", font=("Arial", 40, "bold"), text_color="white")
         self.palavra_label.pack(pady=20)
 
-        # Tentativas restantes
         self.tentativas_label = ctk.CTkLabel(self, text="", font=("Arial", 20), text_color="#FFD700")
         self.tentativas_label.pack(pady=10)
 
-        # Letras erradas
         self.erradas_label = ctk.CTkLabel(self, text="", font=("Arial", 20), text_color="#FF4500")
         self.erradas_label.pack(pady=10)
 
-        # Entrada de letra (Única letra)
         self.entrada_frame = ctk.CTkFrame(self, fg_color="transparent")
-        # Removido o .pack() inicial para ser controlado por atualizar_interface
         
         self.entrada_letra = ctk.CTkEntry(self.entrada_frame, width=50, height=40, font=("Arial", 24), justify="center", fg_color="#343638", text_color="white", border_color="#00BFFF", border_width=2)
         self.entrada_letra.pack(side=ctk.LEFT, padx=10)
@@ -76,9 +69,7 @@ class ForcaGame(ctk.CTk):
         self.btn_adivinhar = ctk.CTkButton(self.entrada_frame, text="Tentar Letra", command=self.processar_palpite_letra, font=("Arial", 20, "bold"), fg_color="#00BFFF", hover_color="#008ECC")
         self.btn_adivinhar.pack(side=ctk.LEFT, padx=10)
 
-        # Entrada de Palavra (Palpite Completo)
         self.palavra_frame = ctk.CTkFrame(self, fg_color="transparent")
-        # Removido o .pack() inicial para ser controlado por atualizar_interface
         
         self.entrada_palavra = ctk.CTkEntry(self.palavra_frame, width=250, height=40, font=("Arial", 20), justify="center", fg_color="#343638", text_color="white", border_color="#FFD700", border_width=2)
         self.entrada_palavra.pack(side=ctk.LEFT, padx=10)
@@ -87,11 +78,9 @@ class ForcaGame(ctk.CTk):
         self.btn_palavra = ctk.CTkButton(self.palavra_frame, text="Adivinhar Palavra", command=self.processar_palpite_palavra, font=("Arial", 20, "bold"), fg_color="#FFD700", hover_color="#C0A000", text_color="black")
         self.btn_palavra.pack(side=ctk.LEFT, padx=10)
 
-        # Mensagem de status
         self.mensagem_label = ctk.CTkLabel(self, text="", font=("Arial", 20, "italic"), text_color="white")
         self.mensagem_label.pack(pady=10)
 
-        # Botão de novo jogo
         self.btn_novo_jogo = ctk.CTkButton(self, text="Novo Jogo", command=self.iniciar_novo_jogo, font=("Arial", 20, "bold"), fg_color="#32CD32", hover_color="#228B22")
         self.btn_novo_jogo.pack(pady=20)
 
@@ -103,22 +92,17 @@ class ForcaGame(ctk.CTk):
         self.tentativas_label.configure(text=f"Tentativas restantes: {self.tentativas_restantes}")
         self.erradas_label.configure(text=f"Letras erradas: {', '.join(sorted(list(self.letras_erradas)))}")
 
-        # Lógica de controle de visibilidade
         if self.jogo_ativo and letras_ocultas <= 4:
-            # 1. Mostrar campo de Palavra (Palpite Completo)
             self.palavra_frame.pack(pady=10)
             self.entrada_palavra.configure(state=ctk.NORMAL)
             self.btn_palavra.configure(state=ctk.NORMAL)
             
-            # 2. Ocultar campo de Letra (Adivinhar Letra)
             self.entrada_frame.pack_forget()
         else:
-            # 1. Ocultar campo de Palavra
             self.palavra_frame.pack_forget()
             self.entrada_palavra.configure(state=ctk.DISABLED)
             self.btn_palavra.configure(state=ctk.DISABLED)
             
-            # 2. Mostrar campo de Letra (se o jogo ainda estiver ativo)
             if self.jogo_ativo:
                 self.entrada_frame.pack(pady=20)
             else:
@@ -126,12 +110,10 @@ class ForcaGame(ctk.CTk):
 
 
         if not self.jogo_ativo:
-            # Desativa ambos os campos se o jogo terminou
             self.entrada_letra.configure(state=ctk.DISABLED)
             self.btn_adivinhar.configure(state=ctk.DISABLED)
-            self.palavra_frame.pack_forget() # Garante que o frame de palavra sumiu
-            self.entrada_frame.pack_forget() # Garante que o frame de letra sumiu
-        # Não precisa de um 'else' aqui, pois a lógica de ativação/desativação já está no bloco 'letras_ocultas'.
+            self.palavra_frame.pack_forget() 
+            self.entrada_frame.pack_forget() 
 
 
     def processar_palpite_event(self, event=None):
